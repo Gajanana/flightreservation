@@ -1,0 +1,45 @@
+package com.bits.dda.config;
+
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@RequiredArgsConstructor
+public class SwaggerConfig {
+
+    @Bean
+    public GroupedOpenApi employeeGroupApi() {
+        return GroupedOpenApi.builder()
+                .group("Users")
+                .pathsToMatch("/tflight/user/**")
+                .addOpenApiCustomiser(getOpenApiCustomiser())
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi jobGroupApi() {
+        return GroupedOpenApi.builder()
+                .group("Flights")
+                .pathsToMatch("/tflight/flight/**")
+                .addOpenApiCustomiser(getOpenApiCustomiser())
+                .build();
+    }
+
+    public OpenApiCustomiser getOpenApiCustomiser() {
+
+        return openAPI -> openAPI.getPaths().values().stream().flatMap(pathItem ->
+                        pathItem.readOperations().stream())
+                .forEach(operation -> {
+                    operation.addParametersItem(new Parameter().name("Authorization").in("header").
+                            schema(new StringSchema().example("token")).required(true));
+                    operation.addParametersItem(new Parameter().name("userId").in("header").
+                            schema(new StringSchema().example("test")).required(true));
+
+                });
+    }
+
+}
