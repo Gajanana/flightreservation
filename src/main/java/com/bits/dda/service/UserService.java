@@ -49,6 +49,7 @@ public class UserService {
             return Mono.error(new IllegalArgumentException("When creating an user, the id and the version must be null"));
         }
 
+        System.out.println("user is "+user);
         return  // Save the new item
                 userRepository.save(user);
                         // Save the links to the tags

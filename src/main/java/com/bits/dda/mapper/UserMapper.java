@@ -13,11 +13,11 @@ public interface UserMapper {
 
     UserResource toResource(User user);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "firstName", ignore = true)
-    @Mapping(target = "lastName", ignore = true)
-    @Mapping(target = "email", ignore = true)
-    @Mapping(target = "phoneNumber", ignore = true)
+      @Mapping(target = "id", ignore = true)
+       @Mapping(target = "version", ignore = true)
+//    @Mapping(target = "lastName", ignore = false)
+//    @Mapping(target = "email", ignore = false)
+//    @Mapping(target = "phoneNumber", ignore = false)
     User toModel(UserResource userResource);
 
 }
