@@ -1,6 +1,7 @@
 package com.bits.dda.repository;
 
 import com.bits.dda.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
@@ -20,6 +21,8 @@ public interface UserRepository extends ReactiveSortingRepository<User, Long> {
 
     @Query("SELECT * FROM flightuser WHERE last_name = :lastname")
     Flux<User> findByLastName(String lastName);
+
+    //Flux<User> findAllBy(Pageable pageable);
 //    @Query("SELECT * FROM flightuser WHERE id = :id")
 //    Mono<User> findById(String id);
 

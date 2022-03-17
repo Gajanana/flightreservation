@@ -4,6 +4,10 @@ import com.bits.dda.Exceptions.ItemNotFoundException;
 import com.bits.dda.model.User;
 import com.bits.dda.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,8 @@ public class UserService {
         return userRepository.findAll(DEFAULT_SORT);
     }
 
+
+
     /**
      * Find a User
      *
@@ -33,6 +39,14 @@ public class UserService {
 
         return userRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ItemNotFoundException(id)));
+    }
+
+
+    public Mono<Page<User>> getUserss(PageRequest pageRequest){
+        return this.userRepository.findAllBy(pageRequest)
+                .collectList()
+                .zipWith(this.userRepository.count())
+                .map(t -> new PageImpl<>(t.getT1(), pageRequest, t.getT2()));
     }
 
 

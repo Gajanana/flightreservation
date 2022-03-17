@@ -19,6 +19,13 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 import static org.springframework.http.ResponseEntity.created;
@@ -35,7 +42,8 @@ public class UserController {
     @GetMapping(value = "/{id}", produces = {APPLICATION_JSON_VALUE})
     public Mono<UserResource> findById(@PathVariable final Long id) {
 
-        return userService.findById(id).map(userMapper::toResource);
+        return userService.findById(id).map(userMapper::toResource).onErrorReturn(
+                new UserResource(420L,"dont","exist", "defaultuser@a.com","9786543222"));
     }
 
     @Operation(summary ="Get the people")
@@ -43,7 +51,42 @@ public class UserController {
     public Flux<UserResource> getAll() {
 
         return userService.findAll()
-                .map(userMapper::toResource);
+                .map(userMapper::toResource).delayElements(Duration.ofSeconds(1));
+    }
+
+
+    @Operation(summary ="Finding Performance")
+    @GetMapping(value = "/performance")//,produces = TEXT_EVENT_STREAM_VALUE)
+    public void performance() {
+        Instant start = Instant.now();
+        List<Mono<Long>> list = Stream.of(1,2,3,4,5,6,7).map(i->{
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+
+            return Mono.just(i.longValue());
+        }).collect(Collectors.toList());
+//        Mono.when(list).block();
+        list.forEach(mono-> mono.subscribe(i-> System.out.println("my i"+i)));
+
+        System.out.println("Time is "+  start.minusMillis(Instant.now().toEpochMilli()));
+        Instant start1 = Instant.now();
+        Flux<Long> flux = Flux.range(1,7).flatMap(i->{
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+
+            return Mono.just(i.longValue());
+        });
+        //Mono.when(list).block();
+        flux.subscribe(i-> System.out.println("my 2"+i));
+        //flux.forEach(flx-> flx.subscribe(i-> System.out.println("my 2"+i)));
+        System.out.println("Time2 is "+  start1.minusMillis(Instant.now().toEpochMilli()));
+
     }
 
 

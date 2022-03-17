@@ -1,7 +1,7 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 01-create-user-table
+      id: flightv1
       author: gajanana
       changes:
         - createTable:
@@ -49,7 +49,279 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
-
+        - createTable:
+            schema: public
+            tableName: address
+            columns:
+              - column:
+                    name: id
+                    type: int
+                    startWith: 100
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+              - column:
+                  name: addressline
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: zipcode
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: airport
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(10)
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_airport_address_id
+                    references: address(id)
+              - column:
+                  name: created_date
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: airline
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(10)
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: aircraft
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: airline_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airline_aircraft_airline_id
+                    references: airline(id)
+              - column:
+                  name: capacity
+                  type: int
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: seat
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: id
+                  type: varchar(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: availability
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location
+                  type: varchar(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_class
+                  type: varchar(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aircraft_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_aircraft_seat_aircraft_id
+                    references: aircraft(id)
+        - createTable:
+            schema: public
+            tableName: hop
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: aircraft
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_aircraft_hop_aircraft_id
+                    references: aircraft(id)
+              - column:
+                  name: arrival_airport
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airport_hop_arrival_airport_id
+                    references: airport(id)
+              - column:
+                  name: departure_airport
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airport_hop_departure_airport_id
+                    references: airport(id)
+        - createTable:
+            schema: public
+            tableName: passenger
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type:  varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+                  defaultValue: 18
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_psgr_user_id
+                    references: user(id)
+        - createTable:
+            schema: public
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: price
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: discount
+                  type: float
+#              - column:
+#                  name: charges
+#                  type: float    #we can calcualte based on date
+              - column:
+                  name: booking_date
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: departure_date
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_txn_user_id
+                    references: user(id)
+        #              - column:
+#                  name: itinerary
+#                  type: int
+#                  constraints:
+#                    nullable: false
+#                    foreignKeyName: fk_itinerary_txn_itinerary_id
+#                    references: itinerary(id)
+              - column:
+                  name: passenger
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_passenger_txn_passenger_id
+                    references: passenger(id)
 #  - changeSet:
 #      id: 02-item-events-trigger
 #      author: ajacquot
