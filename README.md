@@ -3,12 +3,11 @@ Flight Reservation application using webflux
 
 How to run
 
-1 . ```mvn clean compile package -DskipTests -Dverbose ```
+1. ``` mvn clean compile package -DskipTests -Dverbose ```
 
 2. ``` docker-compose -f docker/docker-compose-postgres.yml up ```
 
-
-4. ``` java -jar target/dda-0.0.1-SNAPSHOT.jar ```
+3. ``` java -jar target/dda-0.0.1-SNAPSHOT.jar ```
 
 How to Register user
 
