@@ -1,5 +1,10 @@
-# flightreservation
+# Flightreservation
 Flight Reservation application using webflux
+
+### Prerequisites 
+  1. JAVA 11+ JDK
+  2. DOCKER Runtime
+  3. Favourite IDE (Optional)
 
 ### How to run
 
