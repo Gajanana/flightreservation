@@ -1,7 +1,7 @@
 # flightreservation
 Flight Reservation application using webflux
 
-How to run
+### How to run
 
 1. ``` mvn clean compile package -DskipTests -Dverbose ```
 
