@@ -1,7 +1,7 @@
 databaseChangeLog:
 
   - changeSet:
-      id: flightv1
+      id: flightv2
       author: gajanana
       changes:
         - createTable:
@@ -177,8 +177,8 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: id
-                  type: varchar(5)
+                  name: seat_no
+                  type: int
                   constraints:
                     nullable: false
               - column:
@@ -217,6 +217,26 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: arrival_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: departure_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: distance
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: base_fair
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
                   name: aircraft
                   type: int
                   constraints:
@@ -237,6 +257,56 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_airport_hop_departure_airport_id
                     references: airport(id)
+        - createTable:
+            schema: public
+            tableName: trip
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: arrival_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: departure_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aircraft
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_aircraft_hop_aircraft_id
+                    references: aircraft(id)
+              - column:
+                  name: arrival_airport
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airport_hop_arrival_airport_id
+                    references: airport(id)
+              - column:
+                  name: departure_airport
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airport_hop_departure_airport_id
+                    references: airport(id)
+              - column:
+                  name: user
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_trip_user_id
+                    references: user(id)
         - createTable:
             schema: public
             tableName: passenger
@@ -316,12 +386,57 @@ databaseChangeLog:
 #                    foreignKeyName: fk_itinerary_txn_itinerary_id
 #                    references: itinerary(id)
               - column:
+                  name: tax
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trip
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_trip_txn_trip_id
+                    references: trip(id)
+        - createTable:
+            schema: public
+            tableName: itinerary
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: trip
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_itinerary_fare_itinerary_id
+                    references: trip(id)
+              - column:
                   name: passenger
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_passenger_txn_passenger_id
+                    foreignKeyName: fk_itinerary_passenger_itinerary_id
                     references: passenger(id)
+              - column:
+                  name: aircraft
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_itinerary_aircraft_itinerary_id
+                    references: aircraft(id)
+              - column:
+                  name: seat
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_seat_aircraft_seat_id
+                    references: seat(id)
 #  - changeSet:
 #      id: 02-item-events-trigger
 #      author: ajacquot

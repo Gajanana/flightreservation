@@ -41,13 +41,13 @@ public class UserService {
                 .switchIfEmpty(Mono.error(new ItemNotFoundException(id)));
     }
 
-
-    public Mono<Page<User>> getUserss(PageRequest pageRequest){
-        return this.userRepository.findAllBy(pageRequest)
-                .collectList()
-                .zipWith(this.userRepository.count())
-                .map(t -> new PageImpl<>(t.getT1(), pageRequest, t.getT2()));
-    }
+//
+//    public Mono<Page<User>> getUsers(PageRequest pageRequest){
+//        return this.userRepository.findAllBy(pageRequest)
+//                .collectList()
+//                .zipWith(this.userRepository.count())
+//                .map(t -> new PageImpl<>(t.getT1(), pageRequest, t.getT2()));
+//    }
 
 
     /**
