@@ -1,5 +1,4 @@
 databaseChangeLog:
-
   - changeSet:
       id: flightv2
       author: gajanana
@@ -51,6 +50,54 @@ databaseChangeLog:
                     nullable: false
         - createTable:
             schema: public
+            tableName: country
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: state
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
+            tableName: city
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+        - createTable:
+            schema: public
             tableName: address
             columns:
               - column:
@@ -75,6 +122,45 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
+        - createTable:
+            schema: public
+            tableName: contact
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cell
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tel
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_contct_address_id
+                    references: address(id)
+
         - createTable:
             schema: public
             tableName: airport
@@ -153,7 +239,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: airline_id
+                  name: airline
                   type: int
                   constraints:
                     nullable: false
@@ -284,21 +370,21 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_aircraft_hop_aircraft_id
+                    foreignKeyName: fk_aircraft_trip_aircraft_id
                     references: aircraft(id)
               - column:
                   name: arrival_airport
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_airport_hop_arrival_airport_id
+                    foreignKeyName: fk_airport_trip_arrival_airport_id
                     references: airport(id)
               - column:
                   name: departure_airport
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_airport_hop_departure_airport_id
+                    foreignKeyName: fk_airport_trip_departure_airport_id
                     references: airport(id)
               - column:
                   name: user
@@ -437,9 +523,85 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_seat_aircraft_seat_id
                     references: seat(id)
+        - createTable:
+            schema: public
+            tableName: airport_access
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: airport
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_airport_port_airport_id
+                    references: airport(id)
+              - column:
+                  name: aircraft
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_aircraft_airportaccess_aircraft_id
+                    references: aircraft(id)
+        - createTable:
+            schema: public
+            tableName: branch
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_branch_address_id
+                    references: address(id)
+        - createTable:
+            schema: public
+            tableName: trip_hop
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 100
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: hop
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_hop_triphop_hop_id
+                    references: hop(id)
+              - column:
+                  name: trip
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_trip_has_trip_id
+                    references: trip(id)
 #  - changeSet:
 #      id: 02-item-events-trigger
-#      author: ajacquot
+#      author: gajanana
 #      dbms: '!h2'
 #      changes:
 #        - sqlFile:
