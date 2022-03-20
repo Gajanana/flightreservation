@@ -13,6 +13,7 @@ Flight Reservation application using webflux
 2. ``` docker-compose -f docker/docker-compose-postgres.yml up ```
 
 3. ``` java -jar target/dda-0.0.1-SNAPSHOT.jar ```
+4. To access db `docker exec` into pg docker and run  ` root@f4eda7e19cb2:/# psql -h localhost -p 5432 -U admin flightbooking `
 
 ***
 ### _REST APIs_
