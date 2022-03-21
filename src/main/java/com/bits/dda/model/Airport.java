@@ -11,5 +11,5 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @ToString
 @Accessors(chain = true)
-public class Airline {
+public class Airport {
 }

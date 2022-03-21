@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-@Table("flightuser")
+@Table("user")
 @Getter
 @Setter
 @ToString

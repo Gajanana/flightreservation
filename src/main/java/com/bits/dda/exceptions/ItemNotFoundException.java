@@ -1,4 +1,4 @@
-package com.bits.dda.Exceptions;
+package com.bits.dda.exceptions;
 
 import org.webjars.NotFoundException;
 

@@ -1,13 +1,9 @@
 package com.bits.dda.service;
 
-import com.bits.dda.Exceptions.ItemNotFoundException;
+import com.bits.dda.exceptions.ItemNotFoundException;
 import com.bits.dda.model.User;
 import com.bits.dda.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
